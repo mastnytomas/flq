@@ -114,8 +114,7 @@ const FieldComponent = () => {
         </a>
         <h3>{lineup?.name}</h3>
         <p>
-          Coach: {lineup?.coach} | Year: {lineup?.year} | Opponent:
-          {lineup?.opponent}
+          Coach: {lineup?.coach} | Year: {lineup?.year} | Opponent: {lineup?.opponent}
         </p>
         <p>Description: {lineup?.description}</p>
       </div>
