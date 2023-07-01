@@ -1,9 +1,9 @@
-import { useContext, useState, useEffect } from 'react';
 import { Button } from 'antd';
 import html2canvas from 'html2canvas';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { LineupsContext } from './LineupsContext';
 import { PLAYER_POSITIONS } from '../config/config';
+import { LineupsContext } from './LineupsContext';
 
 const FieldComponent = () => {
   const { teamLineups } = useContext(LineupsContext);
@@ -11,6 +11,7 @@ const FieldComponent = () => {
   const paramsId = params.id;
   const selectedLineup = teamLineups.find((o) => o.id === paramsId);
   const storage = JSON.parse(localStorage.getItem('lineup' + paramsId));
+  //useeefect
   const [lineup, setLineup] = useState(storage ?? selectedLineup);
   const [allPlayersGuessed, setAllPlayersGuessed] = useState(
     lineup?.players.every((player) => player.guessed),
