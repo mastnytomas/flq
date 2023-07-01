@@ -5,7 +5,6 @@ import { LineupsContext } from './LineupsContext';
 
 const Home = () => {
   const { teamLineups } = useContext(LineupsContext);
-  console.log(teamLineups);
   const handleRandomTeam = () => {
     const randomTeamLineup = teamLineups[Math.floor(Math.random() * teamLineups.length)];
     window.location.href = `/guess/${randomTeamLineup.id}`;

@@ -12,8 +12,8 @@ app.post('/saveData', (req, res) => {
 
   fs.readFile('data.json', 'utf8', (err, fileContent) => {
     if (err) {
-      console.error('Chyba při čtení souboru data.json:', err);
-      res.status(500).send('Chyba při ukládání dat.');
+      console.error('Error reading the data.json file:', err);
+      res.status(500).send('Error saving data.');
       return;
     }
     let updatedContent = fileContent.trim();
@@ -23,11 +23,11 @@ app.post('/saveData', (req, res) => {
     updatedContent += ',' + formattedData + ']';
     fs.writeFile('data.json', updatedContent, 'utf8', err => {
       if (err) {
-        console.error('Chyba při ukládání dat:', err);
-        res.status(500).send('Chyba při ukládání dat.');
+        console.error('Error saving data:', err);
+        res.status(500).send('Error saving data.');
       } else {
-        console.log('Data byla uložena do souboru data.json');
-        res.send('Data byla úspěšně uložena.');
+        console.log('The data was stored in the data.json file');
+        res.send('The data has been successfully saved.');
       }
     });
   });
@@ -36,12 +36,11 @@ app.post('/saveData', (req, res) => {
 app.get('/loadData', (req, res) => {
   fs.readFile('data.json', 'utf8', (err, data) => {
     if (err) {
-      console.error('Chyba při čtení dat:', err);
-      res.status(500).send('Chyba při čtení dat.');
+      res.status(500).send('Error reading data.');
     } else {
       try {
         const teamLineups = JSON.parse(data);
-        console.log('Data byla načtena ze souboru data.json');
+        console.log('The data was loaded from the data.json file.');
         const transformedData = teamLineups.map((team) => {
           return {
             id: team.id,
@@ -63,8 +62,8 @@ app.get('/loadData', (req, res) => {
         });
         res.send(transformedData);
       } catch (parseError) {
-        console.error('Chyba při parsování dat:', parseError);
-        res.status(500).send('Chyba při parsování dat.');
+        console.error('Data parsing error:', parseError);
+        res.status(500).send('Data parsing error.');
       }
     }
   });
@@ -72,5 +71,5 @@ app.get('/loadData', (req, res) => {
 
 const port = 3001;
 app.listen(port, () => {
-  console.log(`Server běží na http://localhost:${port}`);
+  console.log(`The server is running on http://localhost:${port}`);
 });

@@ -20,7 +20,7 @@ export const LineupsProvider: React.FC = ({ children }) => {
         setTeamLineups(data);
         setIsLoading(false);
       } catch (error) {
-        console.error('Chyba při načítání dat:', error);
+        console.error('Error loading data:', error);
         setIsLoading(false);
       }
     };

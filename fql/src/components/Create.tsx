@@ -121,14 +121,13 @@ const Create = () => {
     data.id = uuidv4();
     data.formation = formation;
     data.players = transformData(playerData);
-    console.log('Uložená data:', data);
     axios
       .post('http://localhost:3001/saveData', data)
       .then(() => {
         setIsModalOpen(true);
       })
       .catch((error) => {
-        console.error('Chyba při ukládání dat:', error);
+        console.error('Error saving data:', error);
       });
   };
 
@@ -145,7 +144,6 @@ const Create = () => {
 
   const renderPlayers = () => {
     const positions = PLAYER_POSITIONS.find((p) => p.value === formation);
-    console.log(positions);
     if (!positions || !positions.players) {
       return null;
     }
