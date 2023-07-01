@@ -13,7 +13,7 @@ Serverová část poskytuje následující API endpointy:
 
 ```GET /loadData```: Načítá data ze souboru data.json. Vrací seznam načtených dat v transformovaném formátu.
 # Klientská část
-Klientská část aplikace je zodpovědná za interakci s uživatelem. Uživatel může v aplikaci vybírat z různých kvízů, ve kterých hádá základní sestavy fotbalových týmů. Kromě hádání sestav má také možnost vytvářet vlastní sestavy. Formace, které lze pro sestavu vybrat, jsou definovány v souboru fql/config/config.tsx. Přidání dalších sestav je velmi jednoduché a provádí se úpravou tohoto konfiguračního souboru.
+Klientská část aplikace je zodpovědná za interakci s uživatelem. Uživatel může v aplikaci vybírat z různých kvízů, ve kterých hádá základní sestavy fotbalových týmů. Kromě hádání sestav má také možnost vytvářet vlastní sestavy. Formace, které lze pro sestavu vybrat, jsou definovány v souboru client/config/config.tsx. Přidání dalších sestav je velmi jednoduché a provádí se úpravou tohoto konfiguračního souboru.
 Klientská část je postavena na frameworku React s TypeScriptem a využitím knihovny Ant Design.
 
 # Instalace a spuštění
