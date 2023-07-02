@@ -69,9 +69,15 @@ const FieldComponent = () => {
   };
 
   useEffect(() => {
-    const storage = JSON.parse(localStorage.getItem('lineup' + paramsId) || '');
+    const storage = localStorage.getItem('lineup' + paramsId);
     if (storage) {
-      setLineup(storage);
+      const storageData = JSON.parse(storage);
+      console.log(storageData);
+      if (storageData) {
+        setLineup(storageData);
+      } else {
+        setLineup(selectedLineup);
+      }
     } else {
       setLineup(selectedLineup);
     }
