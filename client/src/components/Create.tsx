@@ -1,10 +1,10 @@
-import { Select } from 'antd';
-import { useState, useEffect } from 'react';
-import { Col, Row } from 'antd';
-import { Card, Input, Button, Modal } from 'antd';
+import { Button, Card, Col, Input, Modal, Row, Select, Typography } from 'antd';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { PLAYER_POSITIONS, FORMATIONS } from '../config/config';
+import { FORMATIONS, Formation, PLAYER_POSITIONS, Player } from '../config/config';
+
+const { Text } = Typography;
 
 interface FormData {
   id: string;
@@ -17,11 +17,9 @@ interface FormData {
   players: any[];
 }
 
-interface Player {
-  id: number;
-  position: string;
-  name: string;
-  guessed: boolean;
+interface PlayerPosition {
+  top: string;
+  left: string;
 }
 
 const Create = () => {
@@ -29,7 +27,7 @@ const Create = () => {
   const defaulFormation = '4-3-3';
   const [playerData, setPlayerData] = useState<{ [key: string]: string }>({});
   const [formation, setFormation] = useState(defaulFormation);
-  const [selectedFormation, setSelectedFormation] = useState();
+  const [selectedFormation, setSelectedFormation] = useState<Formation>();
   const [data, setData] = useState<FormData>({
     id: '',
     name: '',
@@ -44,10 +42,8 @@ const Create = () => {
   function transformData(data: { [position: string]: string }): Player[] {
     const transformedData: Player[] = [];
     let id = 1;
-
     for (const position in data) {
       const name = data[position];
-
       const player: Player = {
         id,
         position,
@@ -149,7 +145,7 @@ const Create = () => {
     }
     const playerKeys = Object.keys(positions.players);
     return playerKeys.map((playerKey) => {
-      const player = positions.players[playerKey];
+      const player: PlayerPosition = positions.players[playerKey];
       const { top, left } = player;
       return (
         <div
@@ -194,8 +190,9 @@ const Create = () => {
         <h2 style={{ color: 'lime' }}>Successfully!</h2>
         <h3>You have created a new squad lineup.</h3>
         <h4>
-          Lets hope people sweat when they remember who played for <bold>{data.name}</bold> against
-          <bold>{data.opponent}</bold> in {data.year}
+          Lets hope people sweat when they remember who played for <Text strong>{data.name}</Text>{' '}
+          against
+          <Text strong>{data.opponent}</Text> in {data.year}
         </h4>
       </Modal>
       <a href='/'>
@@ -223,7 +220,7 @@ const Create = () => {
               placeholder='UEFA Champions League final'
             />
             Year
-            <Input<number> onChange={(e) => handleChange(e, 'year')} placeholder='2012' />
+            <Input type='number' onChange={(e) => handleChange(e, 'year')} placeholder='2012' />
             Opponent
             <Input onChange={(e) => handleChange(e, 'opponent')} placeholder='Bayern Munchen' />
           </Card>

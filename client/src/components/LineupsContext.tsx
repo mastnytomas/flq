@@ -1,14 +1,18 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import { Squad } from '../config/config';
 
-interface LineupsContextProps {
-  teamLineups: any[];
+export interface LineupsContextProps {
+  teamLineups: Squad[];
 }
 
 export const LineupsContext = createContext<LineupsContextProps>({
   teamLineups: [],
 });
 
-export const LineupsProvider: React.FC = ({ children }) => {
+export interface Props {
+  children: React.ReactNode;
+}
+export const LineupsProvider: React.FC<Props> = ({ children }) => {
   const [teamLineups, setTeamLineups] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

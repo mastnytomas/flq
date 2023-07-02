@@ -1,9 +1,34 @@
-interface Formation {
+export interface Formation {
   value: string;
   players: string[];
 }
+export interface Squad {
+  coach: string;
+  description: string;
+  formation: string;
+  id: string;
+  name: string;
+  year: number;
+  opponent: string;
+  players: {
+    id: number;
+    position: string;
+    name: string;
+    guessed: boolean;
+  };
+}
 
-const PLAYER_POSITIONS = [
+export interface Player {
+  id: number;
+  position: string;
+  name: string;
+  guessed: boolean;
+}
+
+const PLAYER_POSITIONS: {
+  value: string;
+  players: Record<string, { top: string; left: string }>;
+}[] = [
   {
     value: '4-3-3',
     players: {
@@ -49,4 +74,4 @@ const FORMATIONS: Formation[] = [
   },
 ];
 
-export { PLAYER_POSITIONS, FORMATIONS };
+export { FORMATIONS, PLAYER_POSITIONS };

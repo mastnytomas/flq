@@ -2,21 +2,19 @@ import { Button } from 'antd';
 import html2canvas from 'html2canvas';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PLAYER_POSITIONS } from '../config/config';
-import { LineupsContext } from './LineupsContext';
+import { PLAYER_POSITIONS, Player, Squad } from '../config/config';
+import { LineupsContext, LineupsContextProps } from './LineupsContext';
 
 const FieldComponent = () => {
-  const { teamLineups } = useContext(LineupsContext);
+  const { teamLineups } = useContext<LineupsContextProps>(LineupsContext);
   const params = useParams();
   const paramsId = params.id;
-  const selectedLineup = teamLineups.find((o) => o.id === paramsId);
-  const storage = JSON.parse(localStorage.getItem('lineup' + paramsId));
-  //useeefect
-  const [lineup, setLineup] = useState(storage ?? selectedLineup);
-  const [allPlayersGuessed, setAllPlayersGuessed] = useState(
-    lineup?.players.every((player) => player.guessed),
+  const selectedLineup: Squad | undefined = teamLineups.find((o) => o.id === paramsId);
+  const [lineup, setLineup] = useState<Squad>();
+  const [allPlayersGuessed, setAllPlayersGuessed] = useState<boolean | undefined>(() =>
+    lineup?.players.filter((player: Player) => player.guessed),
   );
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player>();
   const [guessInput, setGuessInput] = useState('');
   const [success, setSuccess] = useState(false);
 
@@ -24,7 +22,7 @@ const FieldComponent = () => {
     (formation) => formation.value === lineup?.formation,
   );
 
-  const handlePlayerClick = (player) => {
+  const handlePlayerClick = (player: Player) => {
     setSelectedPlayer(player);
     setGuessInput('');
     setSuccess(false);
@@ -32,32 +30,45 @@ const FieldComponent = () => {
 
   const saveDivAsImage = () => {
     const divElement = document.getElementById('field');
-    html2canvas(divElement).then((canvas) => {
-      const fileName = `${lineup?.name}_${lineup?.year}.png`;
-      const imgData = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = imgData;
-      link.download = fileName;
-      link.click();
-    });
+    divElement &&
+      html2canvas(divElement).then((canvas) => {
+        const fileName = `${lineup?.name}_${lineup?.year}.png`;
+        const imgData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = fileName;
+        link.click();
+      });
   };
 
-  const handleGuessSubmit = (e) => {
+  const handleGuessSubmit = (e: any) => {
     e.preventDefault();
-    if (guessInput.toLowerCase() === selectedPlayer.name.toLowerCase()) {
+    if (selectedPlayer && guessInput.toLowerCase() === selectedPlayer.name.toLowerCase()) {
       setSuccess(true);
       const key = selectedPlayer.id;
-      setLineup((prevState) => ({
-        ...prevState,
-        players: prevState.players.map((el) => (el.id === key ? { ...el, guessed: true } : el)),
-      }));
+      setLineup(
+        (prevState) =>
+          prevState && {
+            ...prevState,
+            players: prevState.players.map((el: Player) =>
+              el.id === key ? { ...el, guessed: true } : el,
+            ),
+          },
+      );
     }
     setGuessInput('');
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     setGuessInput(e.target.value);
   };
+
+  useEffect(() => {
+    const storage = JSON.parse(localStorage.getItem('lineup' + paramsId) ?? '');
+    if (storage) {
+      setLineup(storage);
+    } else setLineup(selectedLineup);
+  }, [paramsId, selectedLineup]);
 
   useEffect(() => {
     if (lineup) {
@@ -67,12 +78,12 @@ const FieldComponent = () => {
   }, [lineup]);
 
   const renderPlayers = () => {
-    return lineup?.players.map((player) => {
+    return lineup?.players.map((player: Player) => {
       const positionData = selectedFormation?.players[player.position];
       if (!positionData) {
         return null;
       }
-      const hiddenName = player.name.replaceAll(/./g, '*');
+      const hiddenName = '*'.repeat(player.name.length);
       const { top, left } = positionData;
       return (
         <div
@@ -144,10 +155,10 @@ const FieldComponent = () => {
             {success ? (
               <p>Successfully guessed!</p>
             ) : (
-              <form onSubmit={handleGuessSubmit}>
+              <form onSubmit={() => handleGuessSubmit}>
                 <label>
                   Enter players name:
-                  <input type='text' value={guessInput} onChange={handleInputChange} />
+                  <input type='text' value={guessInput} onChange={() => handleInputChange} />
                 </label>
                 <button type='submit'>Submit</button>
               </form>

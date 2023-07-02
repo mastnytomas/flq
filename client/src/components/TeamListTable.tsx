@@ -1,5 +1,6 @@
-import React from 'react';
 import { Table } from 'antd';
+import React from 'react';
+import { Player } from '../config/config';
 
 interface Team {
   id: string;
@@ -10,13 +11,6 @@ interface Team {
   opponent: string;
   formation: string;
   players: Player[];
-}
-
-interface Player {
-  id: number;
-  position: string;
-  name: string;
-  guessed: boolean;
 }
 
 interface Props {
