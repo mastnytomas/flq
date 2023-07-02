@@ -10,7 +10,7 @@ export interface Squad {
   name: string;
   year: number;
   opponent: string;
-  players:  Player[];
+  players: Player[];
 }
 
 export interface Player {

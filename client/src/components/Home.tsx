@@ -1,7 +1,7 @@
-import { useContext } from 'react';
 import { Button } from 'antd';
-import TeamListTable from './TeamListTable';
+import { useContext } from 'react';
 import { LineupsContext } from './LineupsContext';
+import TeamListTable from './TeamListTable';
 
 const Home = () => {
   const { teamLineups } = useContext(LineupsContext);

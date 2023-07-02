@@ -1,20 +1,9 @@
 import { Table } from 'antd';
 import React from 'react';
-import { Player } from '../config/config';
-
-interface Team {
-  id: string;
-  name: string;
-  coach: string;
-  description: string;
-  year: string;
-  opponent: string;
-  formation: string;
-  players: Player[];
-}
+import { Squad } from '../config/config';
 
 interface Props {
-  teams: Team[];
+  teams: Squad[];
 }
 
 const TeamListTable: React.FC<Props> = ({ teams }) => {
@@ -28,13 +17,13 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
       title: 'Guessing team',
       dataIndex: 'name',
       key: 'id',
-      sorter: (a: Team, b: Team) => a.name.localeCompare(b.name),
+      sorter: (a: Squad, b: Squad) => a.name.localeCompare(b.name),
     },
     {
       title: 'Opponent',
       dataIndex: 'opponent',
       key: 'id',
-      sorter: (a: Team, b: Team) => a.opponent.localeCompare(b.opponent),
+      sorter: (a: Squad, b: Squad) => a.opponent.localeCompare(b.opponent),
     },
     {
       title: 'Match description',
@@ -50,16 +39,16 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
       title: 'Year',
       dataIndex: 'year',
       key: 'id',
-      sorter: (a: Team, b: Team) => parseInt(a.year) - parseInt(b.year),
+      sorter: (a: Squad, b: Squad) => a.year - b.year,
     },
   ];
 
-  const handleRowClick = (record: Team) => {
+  const handleRowClick = (record: Squad) => {
     window.location.href = `/guess/${record.id}`;
   };
 
   return (
-    <Table<Team>
+    <Table<Squad>
       dataSource={teams}
       columns={columns}
       onRow={(record) => ({
