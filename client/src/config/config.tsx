@@ -10,12 +10,7 @@ export interface Squad {
   name: string;
   year: number;
   opponent: string;
-  players: {
-    id: number;
-    position: string;
-    name: string;
-    guessed: boolean;
-  };
+  players:  Player[];
 }
 
 export interface Player {

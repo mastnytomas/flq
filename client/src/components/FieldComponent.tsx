@@ -7,15 +7,19 @@ import { LineupsContext, LineupsContextProps } from './LineupsContext';
 
 const FieldComponent = () => {
   const { teamLineups } = useContext<LineupsContextProps>(LineupsContext);
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const paramsId = params.id;
   const selectedLineup: Squad | undefined = teamLineups.find((o) => o.id === paramsId);
-  const [lineup, setLineup] = useState<Squad>();
-  const [allPlayersGuessed, setAllPlayersGuessed] = useState<boolean | undefined>(() =>
-    lineup?.players.filter((player: Player) => player.guessed),
-  );
-  const [selectedPlayer, setSelectedPlayer] = useState<Player>();
-  const [guessInput, setGuessInput] = useState('');
+  const [lineup, setLineup] = useState<Squad | undefined>(undefined);
+  const [allPlayersGuessed, setAllPlayersGuessed] = useState<boolean | undefined>(() => {
+    if (lineup && lineup.players) {
+      const playersArray = Array.isArray(lineup.players) ? lineup.players : [lineup.players];
+      return playersArray.every((player) => player.guessed);
+    }
+    return undefined;
+  });
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | undefined>(undefined);
+  const [guessInput, setGuessInput] = useState<string>('');
   const [success, setSuccess] = useState(false);
 
   const selectedFormation = PLAYER_POSITIONS.find(
@@ -41,81 +45,95 @@ const FieldComponent = () => {
       });
   };
 
-  const handleGuessSubmit = (e: any) => {
+  const handleGuessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedPlayer && guessInput.toLowerCase() === selectedPlayer.name.toLowerCase()) {
       setSuccess(true);
       const key = selectedPlayer.id;
-      setLineup(
-        (prevState) =>
-          prevState && {
-            ...prevState,
-            players: prevState.players.map((el: Player) =>
-              el.id === key ? { ...el, guessed: true } : el,
-            ),
-          },
+      setLineup((prevState) =>
+        prevState
+          ? {
+              ...prevState,
+              players: Array.isArray(prevState.players)
+                ? prevState.players.map((el) => (el.id === key ? { ...el, guessed: true } : el))
+                : prevState.players,
+            }
+          : undefined
       );
     }
     setGuessInput('');
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGuessInput(e.target.value);
   };
 
   useEffect(() => {
-    const storage = JSON.parse(localStorage.getItem('lineup' + paramsId) ?? '');
+    const storage = JSON.parse(localStorage.getItem('lineup' + paramsId) || '');
     if (storage) {
       setLineup(storage);
-    } else setLineup(selectedLineup);
+    } else {
+      setLineup(selectedLineup);
+    }
   }, [paramsId, selectedLineup]);
 
   useEffect(() => {
     if (lineup) {
       localStorage.setItem('lineup' + lineup.id, JSON.stringify(lineup));
-      setAllPlayersGuessed(lineup.players.every((player) => player.guessed));
+      const playersArray = Array.isArray(lineup.players) ? lineup.players : [lineup.players];
+      setAllPlayersGuessed(playersArray.every((player) => player.guessed));
     }
   }, [lineup]);
 
   const renderPlayers = () => {
-    return lineup?.players.map((player: Player) => {
-      const positionData = selectedFormation?.players[player.position];
-      if (!positionData) {
-        return null;
-      }
-      const hiddenName = '*'.repeat(player.name.length);
-      const { top, left } = positionData;
-      return (
-        <div
-          key={player.id}
-          style={{
-            position: 'absolute',
-            top,
-            left,
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <div>
-            <div onClick={() => !player.guessed && handlePlayerClick(player)} aria-hidden='true'>
-              <img
-                src='../jersey.png'
-                alt='Dres ikona'
-                style={{ width: 40, height: 40, cursor: 'pointer' }}
-              />
-            </div>
-            {player.guessed ? (
-              <div
-                style={{ textAlign: 'center', marginTop: -1, color: 'black', fontWeight: 'bold' }}
-              >
-                {player.name}
+    return lineup && Array.isArray(lineup.players)
+      ? lineup.players.map((player: Player) => {
+          const positionData = selectedFormation?.players[player.position];
+          if (!positionData) {
+            return null;
+          }
+          const hiddenName = '*'.repeat(player.name.length);
+          const { top, left } = positionData;
+          return (
+            <div
+              key={player.id}
+              style={{
+                position: 'absolute',
+                top,
+                left,
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              <div>
+                <div
+                  onClick={() => !player.guessed && handlePlayerClick(player)}
+                  aria-hidden='true'
+                >
+                  <img
+                    src='../jersey.png'
+                    alt='Dres ikona'
+                    style={{ width: 40, height: 40, cursor: 'pointer' }}
+                  />
+                </div>
+                {player.guessed ? (
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      marginTop: -1,
+                      color: 'black',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {player.name}
+                  </div>
+                ) : (
+                  <div>{hiddenName}</div>
+                )}
               </div>
-            ) : (
-              <div>{hiddenName}</div>
-            )}
-          </div>
-        </div>
-      );
-    });
+            </div>
+          );
+        })
+      : null;
   };
 
   return (
@@ -155,10 +173,10 @@ const FieldComponent = () => {
             {success ? (
               <p>Successfully guessed!</p>
             ) : (
-              <form onSubmit={() => handleGuessSubmit}>
+              <form onSubmit={handleGuessSubmit}>
                 <label>
                   Enter players name:
-                  <input type='text' value={guessInput} onChange={() => handleInputChange} />
+                  <input type='text' value={guessInput} onChange={handleInputChange} />
                 </label>
                 <button type='submit'>Submit</button>
               </form>
