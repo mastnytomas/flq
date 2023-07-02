@@ -165,7 +165,7 @@ const Create = () => {
                 {playerKey}
               </div>
               <img
-                src='../jersey.png'
+                src='/jersey.png'
                 alt='Dres ikona'
                 style={{ width: 40, height: 40, cursor: 'pointer' }}
               />
