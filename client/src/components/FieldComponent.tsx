@@ -58,7 +58,7 @@ const FieldComponent = () => {
                 ? prevState.players.map((el) => (el.id === key ? { ...el, guessed: true } : el))
                 : prevState.players,
             }
-          : undefined
+          : undefined,
       );
     }
     setGuessInput('');
