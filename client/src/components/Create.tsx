@@ -118,7 +118,7 @@ const Create = () => {
     data.formation = formation;
     data.players = transformData(playerData);
     axios
-      .post('http://localhost:3001/saveData', data)
+      .post('https://flq-server.vercel.app/saveData', data)
       .then(() => {
         setIsModalOpen(true);
       })

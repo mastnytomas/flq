@@ -307,4 +307,80 @@
 			}
 		]
 	}
-]
+,{
+  "id": "712db163-7ad2-4088-9d29-d6a79d40e342",
+  "name": "Manchester United F.C",
+  "coach": "Sir Alex Ferguson",
+  "description": "153rd Manchester derby",
+  "year": "2009",
+  "opponent": "Manchester City F.C.",
+  "formation": "4-4-2",
+  "players": [
+    {
+      "id": 1,
+      "position": "GK",
+      "name": "Foster",
+      "guessed": false
+    },
+    {
+      "id": 2,
+      "position": "CB1",
+      "name": "Vidic",
+      "guessed": false
+    },
+    {
+      "id": 3,
+      "position": "CB2",
+      "name": "Ferdinand",
+      "guessed": false
+    },
+    {
+      "id": 4,
+      "position": "RB",
+      "name": "O´Shea",
+      "guessed": false
+    },
+    {
+      "id": 5,
+      "position": "LB",
+      "name": "Evra",
+      "guessed": false
+    },
+    {
+      "id": 6,
+      "position": "CM1",
+      "name": "Anderson",
+      "guessed": false
+    },
+    {
+      "id": 7,
+      "position": "CM2",
+      "name": "Fletcher",
+      "guessed": false
+    },
+    {
+      "id": 8,
+      "position": "LM",
+      "name": "Giggs",
+      "guessed": false
+    },
+    {
+      "id": 9,
+      "position": "RM",
+      "name": "Park",
+      "guessed": false
+    },
+    {
+      "id": 10,
+      "position": "ST1",
+      "name": "Rooney",
+      "guessed": false
+    },
+    {
+      "id": 11,
+      "position": "ST2",
+      "name": "Berbatov",
+      "guessed": false
+    }
+  ]
+}]

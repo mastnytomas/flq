@@ -19,7 +19,7 @@ export const LineupsProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/loadData');
+        const response = await fetch('https://flq-server.vercel.app/loadData');
         const data = await response.json();
         setTeamLineups(data);
         setIsLoading(false);
