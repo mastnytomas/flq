@@ -66,8 +66,8 @@ const FieldComponent = () => {
       setSubmittedChars([]);
     }
     if (selectedPlayer) {
-      const correct: string[] = [];
-      const wrong: string[] = [];
+      const correct: string[] = correctChars;
+      const wrong: string[] = wrongChars;
       for (const char of submittedChars) {
         if (selectedPlayer.name.toUpperCase().includes(char)) {
           correct.push(char);
