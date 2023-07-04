@@ -2,7 +2,7 @@ import { Button, Card, Col, Input, Modal, Row, Select, Typography } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { FORMATIONS, Formation, PLAYER_POSITIONS, Player } from '../config/config';
+import { FORMATIONS, Formation, PLAYER_POSITIONS, Player, SERVER_URL } from '../config/config';
 
 const { Text } = Typography;
 
@@ -49,6 +49,8 @@ const Create = () => {
         position,
         name,
         guessed: false,
+        correctChars: [],
+        wrongChars: [],
       };
 
       transformedData.push(player);
@@ -118,7 +120,7 @@ const Create = () => {
     data.formation = formation;
     data.players = transformData(playerData);
     axios
-      .post('https://flq-server.onrender.com/saveData', data)
+      .post(SERVER_URL + 'saveData', data)
       .then(() => {
         setIsModalOpen(true);
       })
@@ -191,8 +193,7 @@ const Create = () => {
         <h3>You have created a new squad lineup.</h3>
         <h4>
           Lets hope people sweat when they remember who played for <Text strong>{data.name}</Text>{' '}
-          against
-          <Text strong>{data.opponent}</Text> in {data.year}
+          against <Text strong>{data.opponent}</Text> in {data.year}
         </h4>
       </Modal>
       <a href='/'>

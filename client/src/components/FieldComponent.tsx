@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Card, Col, Input, Row } from 'antd';
 import html2canvas from 'html2canvas';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -21,6 +21,9 @@ const FieldComponent = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | undefined>(undefined);
   const [guessInput, setGuessInput] = useState<string>('');
   const [success, setSuccess] = useState(false);
+  const [submittedChars, setSubmittedChars] = useState<string[]>([]);
+  const [correctChars, setCorrectChars] = useState<string[]>([]);
+  const [wrongChars, setWrongChars] = useState<string[]>([]);
 
   const selectedFormation = PLAYER_POSITIONS.find(
     (formation) => formation.value === lineup?.formation,
@@ -60,6 +63,35 @@ const FieldComponent = () => {
             }
           : undefined,
       );
+      setSubmittedChars([]);
+    }
+    if (selectedPlayer) {
+      const correct: string[] = [];
+      const wrong: string[] = [];
+      for (const char of submittedChars) {
+        if (selectedPlayer.name.toUpperCase().includes(char)) {
+          correct.push(char);
+        } else {
+          wrong.push(char);
+        }
+      }
+      setCorrectChars(correct);
+      setWrongChars(wrong);
+      const key = selectedPlayer.id;
+      setLineup((prevState) =>
+        prevState
+          ? {
+              ...prevState,
+              players: Array.isArray(prevState.players)
+                ? prevState.players.map((el) =>
+                    el.id === key
+                      ? { ...el, correctChars: correctChars, wrongChars: wrongChars }
+                      : el,
+                  )
+                : prevState.players,
+            }
+          : undefined,
+      );
     }
     setGuessInput('');
   };
@@ -68,11 +100,23 @@ const FieldComponent = () => {
     setGuessInput(e.target.value);
   };
 
+  const handleDeleteOneCharacter = () => {
+    setGuessInput((prevInput) => prevInput.slice(0, -1));
+  };
+
+  const handleDeleteAllCharacters = () => {
+    setGuessInput('');
+  };
+
+  const handleKeyClick = (key: string) => {
+    setGuessInput((prevInput) => prevInput + key);
+    setSubmittedChars((prevChars) => [...prevChars, key]);
+  };
+
   useEffect(() => {
     const storage = localStorage.getItem('lineup' + paramsId);
     if (storage) {
       const storageData = JSON.parse(storage);
-      console.log(storageData);
       if (storageData) {
         setLineup(storageData);
       } else {
@@ -90,6 +134,14 @@ const FieldComponent = () => {
       setAllPlayersGuessed(playersArray.every((player) => player.guessed));
     }
   }, [lineup]);
+
+  useEffect(() => {
+    if (selectedPlayer) {
+      setSubmittedChars([]);
+      setCorrectChars(selectedPlayer.correctChars);
+      setWrongChars(selectedPlayer.wrongChars);
+    }
+  }, [selectedPlayer]);
 
   const renderPlayers = () => {
     return lineup && Array.isArray(lineup.players)
@@ -142,6 +194,77 @@ const FieldComponent = () => {
       : null;
   };
 
+  const renderKeyboard = () => {
+    const keyboardRows = [
+      ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+      ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+      ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+    ];
+    return (
+      <div style={{ marginTop: 20 }}>
+        {keyboardRows.map((row, rowIndex) => (
+          <div key={rowIndex} style={{ display: 'flex' }}>
+            {row.map((key) => (
+              <Button
+                key={key}
+                type='text'
+                onClick={() => handleKeyClick(key)}
+                style={{
+                  fontWeight: 'bold',
+                  margin: 2,
+                  width: 50,
+                  color: 'black',
+                  backgroundColor: guessInput.includes(key)
+                    ? 'lightblue'
+                    : correctChars?.includes(key)
+                    ? 'lime'
+                    : wrongChars?.includes(key)
+                    ? 'lightcoral'
+                    : 'gray',
+                }}
+                disabled={
+                  selectedPlayer &&
+                  (guessInput?.length >= selectedPlayer.name.length || wrongChars?.includes(key))
+                }
+              >
+                {key}
+              </Button>
+            ))}
+          </div>
+        ))}
+        <Row>
+          <Col xs={2} sm={4} md={6} lg={8} xl={10}>
+            <Button
+              type='text'
+              onClick={handleDeleteOneCharacter}
+              style={{ color: 'black', margin: 2, width: 120, backgroundColor: 'white' }}
+            >
+              Backspace
+            </Button>
+          </Col>
+          <Col xs={20} sm={16} md={12} lg={8} xl={4}>
+            <Button
+              type='text'
+              onClick={handleDeleteAllCharacters}
+              style={{ color: 'black', margin: 2, width: 80, backgroundColor: 'white' }}
+            >
+              Clear
+            </Button>
+          </Col>
+          <Col xs={2} sm={4} md={6} lg={8} xl={10}>
+            <Button
+              type='text'
+              onClick={handleGuessSubmit}
+              style={{ color: 'black', margin: 2, width: 120, backgroundColor: 'white' }}
+            >
+              Submit
+            </Button>
+          </Col>
+        </Row>
+      </div>
+    );
+  };
+
   return (
     <>
       <div>
@@ -175,17 +298,33 @@ const FieldComponent = () => {
         </div>
         {selectedPlayer && (
           <div style={{ marginLeft: 20 }}>
-            <h3>Guessing player:</h3>
             {success ? (
-              <p>Successfully guessed!</p>
+              <>
+                <Card
+                  headStyle={{ backgroundColor: 'lime', color: 'black' }}
+                  title='Successfully guessed!'
+                >
+                  <p>Position: {selectedPlayer.position}</p>
+                  <p style={{ fontWeight: 'bold' }}>Name: {selectedPlayer.name}</p>
+                </Card>
+              </>
             ) : (
-              <form onSubmit={handleGuessSubmit}>
-                <label>
-                  Enter players name:
-                  <input type='text' value={guessInput} onChange={handleInputChange} />
-                </label>
-                <button type='submit'>Submit</button>
-              </form>
+              <>
+                <Card title='Guessing player:'>
+                  <p>Position: {selectedPlayer.position}</p>
+                  <label>
+                    Enter player's name:
+                    <Input
+                      disabled={true}
+                      value={guessInput}
+                      onChange={handleInputChange}
+                      maxLength={selectedPlayer.name.length}
+                    />
+                  </label>
+                  <br />
+                  {renderKeyboard()}
+                </Card>
+              </>
             )}
           </div>
         )}

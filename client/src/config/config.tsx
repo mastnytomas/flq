@@ -1,3 +1,5 @@
+const SERVER_URL = 'https://flq-server.onrender.com/';
+
 export interface Formation {
   value: string;
   players: string[];
@@ -18,6 +20,8 @@ export interface Player {
   position: string;
   name: string;
   guessed: boolean;
+  correctChars: string[];
+  wrongChars: string[];
 }
 
 const PLAYER_POSITIONS: {
@@ -69,4 +73,4 @@ const FORMATIONS: Formation[] = [
   },
 ];
 
-export { FORMATIONS, PLAYER_POSITIONS };
+export { FORMATIONS, PLAYER_POSITIONS, SERVER_URL };

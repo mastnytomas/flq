@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { Squad } from '../config/config';
+import { SERVER_URL, Squad } from '../config/config';
 
 export interface LineupsContextProps {
   teamLineups: Squad[];
@@ -19,7 +19,7 @@ export const LineupsProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://flq-server.onrender.com/loadData');
+        const response = await fetch(`${SERVER_URL}loadData`);
         const data = await response.json();
         setTeamLineups(data);
         setIsLoading(false);

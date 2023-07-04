@@ -55,7 +55,9 @@ app.get('/loadData', (req, res) => {
                 id: player.id,
                 position: player.position,
                 name: player.name,
-                guessed: false
+                guessed: false,
+				correctChars: [],
+				wrongChars: []
               };
             })
           };
