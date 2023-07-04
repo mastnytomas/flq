@@ -312,7 +312,7 @@ const FieldComponent = () => {
               <>
                 <Card title='Guessing player:'>
                   <p>Position: {selectedPlayer.position}</p>
-				  <p>Name lenght: {selectedPlayer.name.length}</p>
+				  <p>Name length: {selectedPlayer.name.length}</p>
                   <label>
                     Enter player's name:
                     <Input
