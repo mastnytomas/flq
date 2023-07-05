@@ -1,13 +1,15 @@
 import { Button } from 'antd';
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LineupsContext } from './LineupsContext';
 import TeamListTable from './TeamListTable';
 
 const Home = () => {
+  const navigate = useNavigate();
   const { teamLineups } = useContext(LineupsContext);
   const handleRandomTeam = () => {
     const randomTeamLineup = teamLineups[Math.floor(Math.random() * teamLineups.length)];
-    window.location.href = `/guess/${randomTeamLineup.id}`;
+    navigate(`/guess/${randomTeamLineup.id}`);
   };
   return (
     <div>

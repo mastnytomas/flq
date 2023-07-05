@@ -25,6 +25,36 @@ const FieldComponent = () => {
   const [correctChars, setCorrectChars] = useState<string[]>([]);
   const [wrongChars, setWrongChars] = useState<string[]>([]);
 
+  useEffect(() => {
+    const storage = localStorage.getItem('lineup' + paramsId);
+    if (storage) {
+      const storageData = JSON.parse(storage);
+      if (storageData) {
+        setLineup(storageData);
+      } else {
+        setLineup(selectedLineup);
+      }
+    } else {
+      setLineup(selectedLineup);
+    }
+  }, [paramsId, selectedLineup]);
+
+  useEffect(() => {
+    if (lineup) {
+      localStorage.setItem('lineup' + lineup.id, JSON.stringify(lineup));
+      const playersArray = Array.isArray(lineup.players) ? lineup.players : [lineup.players];
+      setAllPlayersGuessed(playersArray.every((player) => player.guessed));
+    }
+  }, [lineup]);
+
+  useEffect(() => {
+    if (selectedPlayer) {
+      setSubmittedChars([]);
+      setCorrectChars(selectedPlayer.correctChars);
+      setWrongChars(selectedPlayer.wrongChars);
+    }
+  }, [selectedPlayer]);
+
   const selectedFormation = PLAYER_POSITIONS.find(
     (formation) => formation.value === lineup?.formation,
   );
@@ -112,36 +142,6 @@ const FieldComponent = () => {
     setGuessInput((prevInput) => prevInput + key);
     setSubmittedChars((prevChars) => [...prevChars, key]);
   };
-
-  useEffect(() => {
-    const storage = localStorage.getItem('lineup' + paramsId);
-    if (storage) {
-      const storageData = JSON.parse(storage);
-      if (storageData) {
-        setLineup(storageData);
-      } else {
-        setLineup(selectedLineup);
-      }
-    } else {
-      setLineup(selectedLineup);
-    }
-  }, [paramsId, selectedLineup]);
-
-  useEffect(() => {
-    if (lineup) {
-      localStorage.setItem('lineup' + lineup.id, JSON.stringify(lineup));
-      const playersArray = Array.isArray(lineup.players) ? lineup.players : [lineup.players];
-      setAllPlayersGuessed(playersArray.every((player) => player.guessed));
-    }
-  }, [lineup]);
-
-  useEffect(() => {
-    if (selectedPlayer) {
-      setSubmittedChars([]);
-      setCorrectChars(selectedPlayer.correctChars);
-      setWrongChars(selectedPlayer.wrongChars);
-    }
-  }, [selectedPlayer]);
 
   const renderPlayers = () => {
     return lineup && Array.isArray(lineup.players)
@@ -233,7 +233,7 @@ const FieldComponent = () => {
           </div>
         ))}
         <Row>
-          <Col xs={2} sm={4} md={6} lg={8} xl={10}>
+          <Col>
             <Button
               type='text'
               onClick={handleDeleteOneCharacter}
@@ -242,7 +242,7 @@ const FieldComponent = () => {
               Backspace
             </Button>
           </Col>
-          <Col xs={20} sm={16} md={12} lg={8} xl={4}>
+          <Col>
             <Button
               type='text'
               onClick={handleDeleteAllCharacters}
@@ -251,7 +251,7 @@ const FieldComponent = () => {
               Clear
             </Button>
           </Col>
-          <Col xs={2} sm={4} md={6} lg={8} xl={10}>
+          <Col>
             <Button
               type='text'
               onClick={handleGuessSubmit}
@@ -312,7 +312,7 @@ const FieldComponent = () => {
               <>
                 <Card title='Guessing player:'>
                   <p>Position: {selectedPlayer.position}</p>
-				  <p>Name length: {selectedPlayer.name.length}</p>
+                  <p>Name length: {selectedPlayer.name.length}</p>
                   <label>
                     Enter player's name:
                     <Input
