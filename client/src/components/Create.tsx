@@ -146,11 +146,7 @@ const Create = () => {
               >
                 {playerKey}
               </div>
-              <img
-                src='/jersey.png'
-                alt='Dres ikona'
-                style={{ width: 40, height: 40, cursor: 'pointer' }}
-              />
+              <img src='/jersey.png' alt='Dres ikona' style={{ width: 40, height: 40 }} />
             </div>
             <div style={{ textAlign: 'center', marginTop: -1, color: 'black', fontWeight: 'bold' }}>
               {playerData[playerKey] || ''}
@@ -180,7 +176,7 @@ const Create = () => {
         <Button>Back</Button>
       </a>
       <Row style={{ margin: 50 }}>
-        <Col span={6}>
+        <Col span={4}>
           <Card title='Team configuration' bordered={false} style={{ width: 300 }}>
             Formation
             <br />
@@ -206,12 +202,12 @@ const Create = () => {
             <Input onChange={(e) => handleChange(e, 'opponent')} placeholder='Bayern Munchen' />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={4}>
           <Card title='Players' bordered={false} style={{ width: 300 }}>
             {playerInputs}
           </Card>
         </Col>
-        <Col span={4}>
+        <Col span={6}>
           <div id='field'>
             <div
               style={{

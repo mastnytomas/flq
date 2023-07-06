@@ -51,6 +51,7 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
 
   return (
     <Table<Squad>
+      style={{ maxWidth: '1280px', margin: 'auto' }}
       dataSource={teams}
       columns={columns}
       onRow={(record) => ({

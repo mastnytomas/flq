@@ -313,16 +313,15 @@ const FieldComponent = () => {
                 <Card title='Guessing player:'>
                   <p>Position: {selectedPlayer.position}</p>
                   <p>Name length: {selectedPlayer.name.length}</p>
-                  <label>
-                    Enter player's name:
-                    <Input
-                      disabled={true}
-                      value={guessInput}
-                      onChange={handleInputChange}
-                      maxLength={selectedPlayer.name.length}
-                    />
-                  </label>
+                  Enter players name:
+                  <Input
+                    value={guessInput}
+                    onChange={handleInputChange}
+                    maxLength={selectedPlayer.name.length}
+                    style={{ display: 'none' }}
+                  />
                   <br />
+                  <h3>{guessInput}</h3>
                   {renderKeyboard()}
                 </Card>
               </>
