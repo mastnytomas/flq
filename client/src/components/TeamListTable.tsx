@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Squad } from '../config/config';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const TeamListTable: React.FC<Props> = ({ teams }) => {
+  const navigate = useNavigate();
   const columns = [
     {
       title: 'ID',
@@ -44,7 +46,7 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
   ];
 
   const handleRowClick = (record: Squad) => {
-    window.location.href = `/guess/${record.id}`;
+    navigate(`/guess/${record.id}`);
   };
 
   return (

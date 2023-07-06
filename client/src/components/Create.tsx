@@ -1,8 +1,10 @@
 import { Button, Card, Col, Input, Modal, Row, Select, Typography } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { FORMATIONS, Formation, PLAYER_POSITIONS, Player, SERVER_URL } from '../config/config';
+import { FORMATIONS, Formation, PLAYER_POSITIONS, SERVER_URL } from '../config/config';
+import transformData from '../utils/TransformData';
 
 const { Text } = Typography;
 
@@ -23,6 +25,7 @@ interface PlayerPosition {
 }
 
 const Create = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const defaulFormation = '4-3-3';
   const [playerData, setPlayerData] = useState<{ [key: string]: string }>({});
@@ -39,27 +42,6 @@ const Create = () => {
     players: [],
   });
 
-  function transformData(data: { [position: string]: string }): Player[] {
-    const transformedData: Player[] = [];
-    let id = 1;
-    for (const position in data) {
-      const name = data[position];
-      const player: Player = {
-        id,
-        position,
-        name,
-        guessed: false,
-        correctChars: [],
-        wrongChars: [],
-      };
-
-      transformedData.push(player);
-      id++;
-    }
-
-    return transformedData;
-  }
-
   const handleChangePlayers = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPlayerData((prevData) => ({
@@ -70,7 +52,7 @@ const Create = () => {
 
   const handleModalOk = () => {
     setIsModalOpen(false);
-    window.location.href = `/`;
+    navigate(`/`);
   };
 
   useEffect(() => {
@@ -116,11 +98,9 @@ const Create = () => {
   };
 
   const handleSave = () => {
-    data.id = uuidv4();
-    data.formation = formation;
-    data.players = transformData(playerData);
+    const cpy = { ...data, id: uuidv4(), formation: formation, players: transformData(playerData) };
     axios
-      .post(SERVER_URL + 'saveData', data)
+      .post(SERVER_URL + 'saveData', cpy)
       .then(() => {
         setIsModalOpen(true);
       })
