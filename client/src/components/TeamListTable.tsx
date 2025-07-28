@@ -1,13 +1,18 @@
 import { Table } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Squad } from '../config/config';
+import { Squad } from '../types';
+import { useLineupStore } from '../store/lineupStore';
 
 interface Props {
-  teams: Squad[];
+  teams?: Squad[];
 }
 
 const TeamListTable: React.FC<Props> = ({ teams }) => {
+  const { lineups, fetchLineups, loading } = useLineupStore();
+  useEffect(() => {
+    fetchLineups();
+  }, [fetchLineups]);
   const navigate = useNavigate();
   const columns = [
     {
@@ -52,8 +57,9 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
   return (
     <Table<Squad>
       style={{ maxWidth: '1280px', margin: 'auto' }}
-      dataSource={teams}
+      dataSource={teams || lineups}
       columns={columns}
+      loading={loading}
       onRow={(record) => ({
         onClick: () => handleRowClick(record),
       })}

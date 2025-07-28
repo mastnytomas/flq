@@ -1,15 +1,16 @@
 import { Button, Card, Col, Input, Row } from 'antd';
 import html2canvas from 'html2canvas';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PLAYER_POSITIONS, Player, Squad } from '../config/config';
-import { LineupsContext, LineupsContextProps } from './LineupsContext';
+import { PLAYER_POSITIONS } from '../config/config';
+import { Squad, Player } from '../types';
+import { useLineupStore } from '../store/lineupStore';
 
 const FieldComponent = () => {
-  const { teamLineups } = useContext<LineupsContextProps>(LineupsContext);
+  const { loading, fetchLineupById } = useLineupStore();
   const params = useParams<{ id: string }>();
   const paramsId = params.id;
-  const selectedLineup: Squad | undefined = teamLineups.find((o) => o.id === paramsId);
+  const [selectedLineup, setSelectedLineup] = useState<Squad | undefined>(undefined);
   const [lineup, setLineup] = useState<Squad | undefined>(undefined);
   const [allPlayersGuessed, setAllPlayersGuessed] = useState<boolean | undefined>(() => {
     if (lineup && lineup.players) {
@@ -24,6 +25,12 @@ const FieldComponent = () => {
   const [submittedChars, setSubmittedChars] = useState<string[]>([]);
   const [correctChars, setCorrectChars] = useState<string[]>([]);
   const [wrongChars, setWrongChars] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (paramsId) {
+      fetchLineupById(paramsId).then((lineup: Squad | undefined) => setSelectedLineup(lineup));
+    }
+  }, [paramsId, fetchLineupById]);
 
   useEffect(() => {
     const storage = localStorage.getItem('lineup' + paramsId);
@@ -264,6 +271,10 @@ const FieldComponent = () => {
       </div>
     );
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

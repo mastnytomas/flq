@@ -1,15 +1,16 @@
 import { Button } from 'antd';
-import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LineupsContext } from './LineupsContext';
 import TeamListTable from './TeamListTable';
+import { useLineupStore } from '../store/lineupStore';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { teamLineups } = useContext(LineupsContext);
-  const handleRandomTeam = () => {
-    const randomTeamLineup = teamLineups[Math.floor(Math.random() * teamLineups.length)];
-    navigate(`/guess/${randomTeamLineup.id}`);
+  const { getRandomLineup, lineups } = useLineupStore();
+  const handleRandomTeam = async () => {
+    const randomTeamLineup = await getRandomLineup();
+    if (randomTeamLineup) {
+      navigate(`/guess/${randomTeamLineup.id}`);
+    }
   };
   return (
     <div>
@@ -21,7 +22,7 @@ const Home = () => {
           <Button>Create</Button>
         </a>
         <Button onClick={handleRandomTeam}>Random Team</Button>
-        <TeamListTable teams={teamLineups} />
+        <TeamListTable teams={lineups} />
       </div>
     </div>
   );

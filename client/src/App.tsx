@@ -1,10 +1,10 @@
 import './App.css';
 import Home from './components/Home';
-import Create from './components/Create';
+import CreateLineup from './components/CreateLineup';
 import { ConfigProvider, theme } from 'antd';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FieldComponent from './components/FieldComponent';
-import { LineupsProvider } from './components/LineupsContext';
+import CreateFormation from './components/CreateFormation';
 
 function App() {
   const { darkAlgorithm } = theme;
@@ -16,16 +16,15 @@ function App() {
           algorithm: darkAlgorithm,
         }}
       >
-        <LineupsProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/create' element={<Create />} />
-              <Route path='/guess' element={<FieldComponent />} />
-              <Route path='/guess/:id' element={<FieldComponent />} />
-            </Routes>
-          </BrowserRouter>
-        </LineupsProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/create-lineup' element={<CreateLineup />} />
+            <Route path='/create-formation' element={<CreateFormation />} />
+            <Route path='/guess' element={<FieldComponent />} />
+            <Route path='/guess/:id' element={<FieldComponent />} />
+          </Routes>
+        </BrowserRouter>
       </ConfigProvider>
     </>
   );
