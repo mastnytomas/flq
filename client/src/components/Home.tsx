@@ -2,6 +2,7 @@ import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import TeamListTable from './TeamListTable';
 import { useLineupStore } from '../store/lineupStore';
+import { ROUTES } from '../constants/routes';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Home = () => {
   const handleRandomTeam = async () => {
     const randomTeamLineup = await getRandomLineup();
     if (randomTeamLineup) {
-      navigate(`/guess/${randomTeamLineup.id}`);
+      navigate(ROUTES.GUESS_ID.path.replace(':id', randomTeamLineup.id));
     }
   };
   return (
@@ -18,10 +19,8 @@ const Home = () => {
       <h2>Guess Lineup</h2>
       <div>
         <p>Please select a team:</p>
-        <a href='/create'>
-          <Button>Create</Button>
-        </a>
-        <Button onClick={handleRandomTeam}>Random Team</Button>
+        <Button onClick={() => navigate(ROUTES.CREATE_LINEUP.path)}>Create</Button>
+        <Button onClick={() => handleRandomTeam}>Random Team</Button>
         <TeamListTable teams={lineups} />
       </div>
     </div>

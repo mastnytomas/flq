@@ -5,6 +5,7 @@ import { ConfigProvider, theme } from 'antd';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FieldComponent from './components/FieldComponent';
 import CreateFormation from './components/CreateFormation';
+import { ROUTES } from './constants/routes';
 
 function App() {
   const { darkAlgorithm } = theme;
@@ -18,11 +19,11 @@ function App() {
       >
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/create-lineup' element={<CreateLineup />} />
-            <Route path='/create-formation' element={<CreateFormation />} />
-            <Route path='/guess' element={<FieldComponent />} />
-            <Route path='/guess/:id' element={<FieldComponent />} />
+            <Route path={ROUTES.INDEX.path} element={<Home />} />
+            <Route path={ROUTES.CREATE_LINEUP.path} element={<CreateLineup />} />
+            <Route path={ROUTES.CREATE_FORMATION.path} element={<CreateFormation />} />
+            <Route path={ROUTES.GUESS.path} element={<FieldComponent />} />
+            <Route path={ROUTES.GUESS_ID.path} element={<FieldComponent />} />
           </Routes>
         </BrowserRouter>
       </ConfigProvider>
