@@ -1,4 +1,4 @@
-import { Player } from '../config/config';
+import { Player } from '../types';
 
 export default function transformData(data: { [position: string]: string }): Player[] {
   const transformedData: Player[] = [];
