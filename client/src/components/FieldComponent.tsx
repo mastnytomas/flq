@@ -278,21 +278,21 @@ const FieldComponent = () => {
 
   return (
     <>
-      <div>
-        <a href='/'>
-          <Button>Back</Button>
+      <div className="field-header">
+        <a href='/' style={{ marginRight: 'auto', display: 'block', textAlign: 'left' }}>
+          <Button type="text" style={{ color: '#1890ff', fontWeight: 600 }}>← Back</Button>
         </a>
-        <h3>{lineup?.name}</h3>
+        <h1 style={{ color: '#1890ff' }}>{lineup?.name}</h1>
         <p>
-          Coach: {lineup?.coach} | Year: {lineup?.year} | Opponent: {lineup?.opponent}
+          <strong>Coach:</strong> {lineup?.coach} | <strong>Year:</strong> {lineup?.year} | <strong>Opponent:</strong> {lineup?.opponent}
         </p>
-        <p>Description: {lineup?.description}</p>
+        <p>{lineup?.description}</p>
       </div>
       {allPlayersGuessed && (
-        <>
-          <h2 style={{ color: 'lime' }}>Success, You are a huge knower</h2>
-          <Button onClick={saveDivAsImage}>Save</Button>
-        </>
+        <Card style={{ background: 'linear-gradient(135deg, #52c41a 0%, #73d13d 100%)', color: 'white', textAlign: 'center', marginBottom: 24 }}>
+          <h2 style={{ color: 'white', margin: 0 }}>Excellent! You're a true football expert!</h2>
+          <Button onClick={saveDivAsImage} style={{ marginTop: 16 }}>Save Image</Button>
+        </Card>
       )}
       <div id='field' style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
         <div

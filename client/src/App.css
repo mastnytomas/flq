@@ -1,7 +1,435 @@
+/* =========================
+   GLOBAL STYLES
+   ========================= */
+
+:root {
+  --primary-color: #1890ff;
+  --primary-dark: #0050b3;
+  --primary-light: #40a9ff;
+  --success-color: #52c41a;
+  --danger-color: #ff4d4f;
+  --warning-color: #faad14;
+  --text-primary: #000000d9;
+  --text-secondary: #00000073;
+  --border-color: #d9d9d9;
+  --bg-light: #fafafa;
+  --bg-white: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
 #root {
   max-width: 1920px;
   margin: 0 auto;
-  padding: 2rem;
-  margin-top: 20px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+/* =========================
+   HOME PAGE STYLES
+   ========================= */
+
+.home-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 0;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 60px 20px;
   text-align: center;
+  color: white;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 40px;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  margin-top: 12px;
+  opacity: 0.95;
+  font-weight: 300;
+}
+
+.home-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.stat-card {
+  border: none;
+  border-radius: 8px;
+  background: white;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  padding: 20px 0;
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.ant-statistic-title {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ant-statistic-content {
+  font-size: 28px;
+  color: var(--primary-color) !important;
+  font-weight: 700;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  height: 44px;
+  font-size: 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.import-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  min-width: 180px;
+}
+
+.import-btn:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.random-btn {
+  background: white;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  min-width: 150px;
+}
+
+.random-btn:hover {
+  background: var(--primary-light);
+  color: white;
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.teams-section {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  margin-top: 0;
+}
+
+.empty-state {
+  background: white;
+  border-radius: 8px;
+  padding: 60px 20px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+/* =========================
+   IMPORT PAGE STYLES
+   ========================= */
+
+.import-container {
+  background: #f5f7fa;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.back-button {
+  color: var(--primary-color);
+  font-size: 16px;
+  margin-bottom: 20px;
+  height: auto;
+}
+
+.back-button:hover {
+  color: var(--primary-dark);
+}
+
+.import-hero {
+  text-align: center;
+  margin-bottom: 40px;
+  color: white;
+}
+
+.import-title {
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.import-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.filter-card {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.select-wrapper .ant-select {
+  width: 100%;
+}
+
+.select-wrapper .ant-select-selector {
+  border-radius: 6px;
+  border-color: var(--border-color) !important;
+  height: 40px;
+}
+
+.search-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  font-weight: 600;
+  border-radius: 6px;
+  height: 40px;
+}
+
+.search-button:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.results-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+
+.results-header {
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--bg-light);
+  padding-bottom: 16px;
+}
+
+.results-header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.lineup-row {
+  transition: background-color 0.3s ease;
+}
+
+.lineup-row:hover {
+  background-color: #f5f7fa !important;
+}
+
+/* Ant Design Table Customization */
+.ant-table {
+  background: white;
+}
+
+.ant-table-thead > tr > th {
+  background: #f5f7fa;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.ant-btn-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 600;
+}
+
+.ant-btn-primary:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+/* =========================
+   FIELD/QUIZ PAGE STYLES
+   ========================= */
+
+.field-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+}
+
+.field-header {
+  text-align: center;
+  margin-bottom: 40px;
+  background: white;
+  padding: 30px 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.field-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: var(--primary-color);
+}
+
+.field-header p {
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.field-content {
+  background: white;
+  border-radius: 8px;
+  padding: 40px 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 30px;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.player-card {
+  background: var(--bg-light);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.player-card:hover {
+  border-color: var(--primary-color);
+  background: #e6f7ff;
+  transform: translateY(-2px);
+}
+
+.player-card.active {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.guess-input {
+  font-size: 18px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 2px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.guess-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+   ========================= */
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .import-title {
+    font-size: 28px;
+  }
+
+  .field-header h1 {
+    font-size: 24px;
+  }
+
+  .player-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
 }

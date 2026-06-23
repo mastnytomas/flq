@@ -12,6 +12,7 @@ export interface Squad {
   year: number;
   opponent: string;
   players: Player[];
+  source?: 'manual' | 'soccerdata';
 }
 
 export interface Player {
@@ -21,4 +22,30 @@ export interface Player {
   guessed: boolean;
   correctChars: string[];
   wrongChars: string[];
+}
+
+export interface User {
+  id: string;
+  email: string;
+  username: string;
+  createdAt: Date;
+  updatedAt: Date;
+  avatar?: string;
+}
+
+export interface UserStats {
+  userId: string;
+  totalGames: number;
+  gamesWon: number;
+  totalScore: number;
+  averageScore: number;
+  favoriteLeague?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Favorite {
+  userId: string;
+  lineupId: string;
+  addedAt: Date;
 }

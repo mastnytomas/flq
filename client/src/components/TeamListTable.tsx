@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Table, Alert } from 'antd';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Squad } from '../types';
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const TeamListTable: React.FC<Props> = ({ teams }) => {
-  const { lineups, fetchLineups, loading } = useLineupStore();
+  const { lineups, fetchLineups, loading, error } = useLineupStore();
   useEffect(() => {
     fetchLineups();
   }, [fetchLineups]);
@@ -23,29 +23,29 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
     {
       title: 'Guessing team',
       dataIndex: 'name',
-      key: 'id',
+      key: 'name',
       sorter: (a: Squad, b: Squad) => a.name.localeCompare(b.name),
     },
     {
       title: 'Opponent',
       dataIndex: 'opponent',
-      key: 'id',
+      key: 'opponent',
       sorter: (a: Squad, b: Squad) => a.opponent.localeCompare(b.opponent),
     },
     {
       title: 'Match description',
       dataIndex: 'description',
-      key: 'id',
+      key: 'description',
     },
     {
       title: 'Coach',
       dataIndex: 'coach',
-      key: 'id',
+      key: 'coach',
     },
     {
       title: 'Year',
       dataIndex: 'year',
-      key: 'id',
+      key: 'year',
       sorter: (a: Squad, b: Squad) => a.year - b.year,
     },
   ];
@@ -55,15 +55,28 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
   };
 
   return (
-    <Table<Squad>
-      style={{ maxWidth: '1280px', margin: 'auto' }}
-      dataSource={teams || lineups}
-      columns={columns}
-      loading={loading}
-      onRow={(record) => ({
-        onClick: () => handleRowClick(record),
-      })}
-    />
+    <>
+      {error && (
+        <Alert
+          message="Chyba při načítání dat"
+          description={error}
+          type="error"
+          showIcon
+          closable
+          style={{ marginBottom: 16 }}
+        />
+      )}
+      <Table<Squad>
+        style={{ maxWidth: '1280px', margin: 'auto' }}
+        dataSource={teams || lineups}
+        columns={columns}
+        loading={loading}
+        rowKey={(record) => record.id}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+        })}
+      />
+    </>
   );
 };
 

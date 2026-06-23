@@ -1,6 +1,27 @@
 import { Formation } from '../types';
 
-const SERVER_URL = 'https://flq-server.onrender.com/';
+// Development: 'http://localhost:3001'
+// Production: 'https://flq-server.onrender.com/'
+const SERVER_URL = 'http://localhost:3001';
+
+// API Endpoints
+const API_ENDPOINTS = {
+  // Data endpoints (uživatelské lineupy)
+  SAVE_DATA: `${SERVER_URL}/api/data/save`,
+  LOAD_DATA: `${SERVER_URL}/api/data/load`,
+  GET_LINEUP: (id: string) => `${SERVER_URL}/api/data/${id}`,
+  UPDATE_LINEUP: (id: string) => `${SERVER_URL}/api/data/${id}`,
+  DELETE_LINEUP: (id: string) => `${SERVER_URL}/api/data/${id}`,
+  
+  // SoccerData endpoints
+  AVAILABLE_LEAGUES: `${SERVER_URL}/api/teams/available-leagues`,
+  TEAM_STATS: (league: string, season: string) => 
+    `${SERVER_URL}/api/teams/${encodeURIComponent(league)}/${season}/stats`,
+  TEAM_LINEUPS: (league: string, season: string) => 
+    `${SERVER_URL}/api/teams/${encodeURIComponent(league)}/${season}/lineups`,
+  TEAM_MATCHES: (league: string, season: string) => 
+    `${SERVER_URL}/api/teams/${encodeURIComponent(league)}/${season}/matches`,
+};
 
 const PLAYER_POSITIONS: {
   value: string;
@@ -51,4 +72,4 @@ const FORMATIONS: Formation[] = [
   },
 ];
 
-export { FORMATIONS, PLAYER_POSITIONS, SERVER_URL };
+export { API_ENDPOINTS, FORMATIONS, PLAYER_POSITIONS, SERVER_URL };

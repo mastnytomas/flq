@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import { Button, Card, Input, Modal, Typography } from 'antd';
-import { useFormationStore } from '../store/formationStore';
 
 const { Text } = Typography;
 
@@ -26,7 +25,6 @@ const CreateFormation = () => {
   const [playerInput, setPlayerInput] = useState('');
   const [positions, setPositions] =
     useState<{ [key: string]: { top: string; left: string } }>(DEFAULT_POSITIONS);
-  const { createFormation } = useFormationStore();
   const fieldRef = useRef<HTMLDivElement>(null);
 
   const handleAddPlayer = () => {
@@ -56,7 +54,6 @@ const CreateFormation = () => {
   const handleSave = async () => {
     if (!value || players.length === 0) return;
     try {
-      await createFormation({ value, players });
       setIsModalOpen(true);
       setValue(DEFAULT_FORMATION);
       setPlayers(Object.keys(DEFAULT_POSITIONS));
