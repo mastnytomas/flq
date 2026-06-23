@@ -15,7 +15,7 @@ interface LineupData {
 const ImportLineups = () => {
   const navigate = useNavigate();
   const { createLineup } = useLineupStore();
-  
+
   const [leagues, setLeagues] = useState<string[]>([]);
   const [selectedLeague, setSelectedLeague] = useState<string>('');
   const [selectedSeason, setSelectedSeason] = useState<string>('2024-25');
@@ -37,7 +37,7 @@ const ImportLineups = () => {
         setLoading(true);
         const response = await fetch(API_ENDPOINTS.AVAILABLE_LEAGUES);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
+
         const result = await response.json();
         setLeagues(result.data || []);
         setError(null);
@@ -66,14 +66,14 @@ const ImportLineups = () => {
 
       const url = API_ENDPOINTS.TEAM_LINEUPS(selectedLeague, selectedSeason);
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: Nepodařilo se stáhnout lineups`);
       }
 
       const result = await response.json();
       const data = result.data || [];
-      
+
       const formatted = data.map((lineup: any, idx: number) => ({
         key: idx,
         team: lineup.team || 'N/A',
@@ -120,7 +120,7 @@ const ImportLineups = () => {
 
       await createLineup(squadData);
       message.success(`${lineup.team} byl úspěšně importován!`);
-      
+
       setTimeout(() => navigate('/'), 1000);
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Chyba při importu';
@@ -157,8 +157,8 @@ const ImportLineups = () => {
       key: 'action',
       render: (_: any, record: LineupData) => (
         <Button
-          type="primary"
-          size="small"
+          type='primary'
+          size='small'
           onClick={() => handleImportLineup(record)}
           loading={importing}
         >
@@ -169,17 +169,17 @@ const ImportLineups = () => {
   ];
 
   return (
-    <div className="import-container" style={{ maxWidth: 1200, margin: '0 auto', padding: 24 }}>
-      <Button onClick={() => navigate('/')} style={{ marginBottom: 16 }} type="text">
+    <div className='import-container' style={{ maxWidth: 1200, margin: '0 auto', padding: 24 }}>
+      <Button onClick={() => navigate('/')} style={{ marginBottom: 16 }} type='text'>
         ← Back
       </Button>
 
-      <Card title="Importovat Real Lineups" bordered={false} style={{ marginBottom: 24 }}>
+      <Card title='Importovat Real Lineups' bordered={false} style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
           <div style={{ minWidth: 250 }}>
             <label style={{ display: 'block', marginBottom: 8 }}>Liga</label>
             <Select
-              placeholder="Vyberte ligu"
+              placeholder='Vyberte ligu'
               value={selectedLeague || undefined}
               onChange={setSelectedLeague}
               options={leagues.map((league) => ({ label: league, value: league }))}
@@ -199,7 +199,7 @@ const ImportLineups = () => {
 
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <Button
-              type="primary"
+              type='primary'
               onClick={handleSearchLineups}
               loading={loading}
               disabled={!selectedLeague}
@@ -211,9 +211,9 @@ const ImportLineups = () => {
 
         {error && (
           <Alert
-            message="Chyba"
+            message='Chyba'
             description={error}
-            type="error"
+            type='error'
             showIcon
             closable
             style={{ marginBottom: 16 }}
@@ -223,7 +223,7 @@ const ImportLineups = () => {
 
       {loading ? (
         <div style={{ textAlign: 'center', padding: 40 }}>
-          <Spin size="large" tip="Načítám lineups..." />
+          <Spin size='large' tip='Načítám lineups...' />
         </div>
       ) : (
         <Card title={`Dostupné Lineups (${lineupData.length})`} bordered={false}>

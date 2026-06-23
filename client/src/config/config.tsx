@@ -12,14 +12,14 @@ const API_ENDPOINTS = {
   GET_LINEUP: (id: string) => `${SERVER_URL}/api/data/${id}`,
   UPDATE_LINEUP: (id: string) => `${SERVER_URL}/api/data/${id}`,
   DELETE_LINEUP: (id: string) => `${SERVER_URL}/api/data/${id}`,
-  
+
   // SoccerData endpoints
   AVAILABLE_LEAGUES: `${SERVER_URL}/api/teams/available-leagues`,
-  TEAM_STATS: (league: string, season: string) => 
+  TEAM_STATS: (league: string, season: string) =>
     `${SERVER_URL}/api/teams/${encodeURIComponent(league)}/${season}/stats`,
-  TEAM_LINEUPS: (league: string, season: string) => 
+  TEAM_LINEUPS: (league: string, season: string) =>
     `${SERVER_URL}/api/teams/${encodeURIComponent(league)}/${season}/lineups`,
-  TEAM_MATCHES: (league: string, season: string) => 
+  TEAM_MATCHES: (league: string, season: string) =>
     `${SERVER_URL}/api/teams/${encodeURIComponent(league)}/${season}/matches`,
 };
 

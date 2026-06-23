@@ -3,6 +3,7 @@
 ## Overview
 
 Aplikace používá **hybrid approach**:
+
 - **LineUps (squady)** → Python Backend + SQLite + SoccerData API
 - **User Data** → Firebase Firestore
 - **Frontend** → Zustand stores (oddělené pro lineups a user data)
@@ -51,6 +52,7 @@ Aplikace používá **hybrid approach**:
 ### Endpoint: `/api/data/*`
 
 **POST /api/data/save** - Uložit lineup
+
 ```typescript
 {
   name: "Manchester United",
@@ -66,11 +68,13 @@ Aplikace používá **hybrid approach**:
 ```
 
 **GET /api/data/load** - Načíst všechny lineups
+
 ```typescript
 Response: { data: Squad[], success: true, ... }
 ```
 
 **GET /api/data/:id** - Načíst jednotlivý lineup
+
 ```typescript
 Response: { data: Squad, success: true }
 ```
@@ -97,37 +101,40 @@ const lineupStore = {
 ### Collections
 
 #### `users`
+
 ```typescript
 interface User {
-  id: string;           // Firebase UID
-  email: string;
-  username: string;
-  avatar?: string;
-  createdAt: Date;
-  updatedAt: Date;
+	id: string; // Firebase UID
+	email: string;
+	username: string;
+	avatar?: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 ```
 
 #### `user_stats`
+
 ```typescript
 interface UserStats {
-  userId: string;       // Reference ke `users.id`
-  totalGames: number;
-  gamesWon: number;
-  totalScore: number;
-  averageScore: number;
-  favoriteLeague?: string;
-  createdAt: Date;
-  updatedAt: Date;
+	userId: string; // Reference ke `users.id`
+	totalGames: number;
+	gamesWon: number;
+	totalScore: number;
+	averageScore: number;
+	favoriteLeague?: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 ```
 
 #### `favorites`
+
 ```typescript
 interface Favorite {
-  userId: string;       // Reference ke `users.id`
-  lineupId: string;     // Reference ke `team_lineups.id`
-  addedAt: Date;
+	userId: string; // Reference ke `users.id`
+	lineupId: string; // Reference ke `team_lineups.id`
+	addedAt: Date;
 }
 ```
 
@@ -138,13 +145,13 @@ const userStore = {
   // User data
   currentUser: User | null,
   setCurrentUser(user),
-  
+
   // User statistics
   userStats: UserStats | null,
   fetchUserStats(userId),
   createUserStats(userId),
   updateUserStats(userId, stats),
-  
+
   // Favorites
   favorites: string[],
   fetchFavorites(userId),
@@ -161,6 +168,7 @@ const userStore = {
 ### Endpoint: `/api/teams/*`
 
 **GET /api/teams/available-leagues**
+
 ```json
 {
   "success": true,
@@ -173,6 +181,7 @@ const userStore = {
 ```
 
 **GET /api/teams/:league/:season/lineups**
+
 ```json
 {
   "success": true,
@@ -191,6 +200,7 @@ const userStore = {
 ### Frontend: `ImportLineups.tsx`
 
 User workflow:
+
 1. Vybere ligu
 2. Vybere sezónu
 3. Vidí dostupné lineups
@@ -202,39 +212,42 @@ User workflow:
 ## 4️⃣ USAGE EXAMPLES
 
 ### Načtení lineupů
+
 ```typescript
-import { useLineupStore } from './store/lineupStore';
+import { useLineupStore } from "./store/lineupStore";
 
 const { lineups, fetchLineups, loading } = useLineupStore();
 
 useEffect(() => {
-  fetchLineups(); // GET http://localhost:3001/api/data/load
+	fetchLineups(); // GET http://localhost:3001/api/data/load
 }, []);
 ```
 
 ### Správa uživatele
+
 ```typescript
-import { useUserStore } from './store/userStore';
+import { useUserStore } from "./store/userStore";
 
 const { currentUser, userStats, fetchUserStats } = useUserStore();
 
 useEffect(() => {
-  if (userId) {
-    fetchUserStats(userId); // Query Firebase
-  }
+	if (userId) {
+		fetchUserStats(userId); // Query Firebase
+	}
 }, [userId]);
 ```
 
 ### Přidání do oblíbených
+
 ```typescript
 const { addFavorite, isFavorite } = useUserStore();
 
 const handleToggleFavorite = async (lineupId: string) => {
-  if (isFavorite(lineupId)) {
-    await removeFavorite(userId, lineupId);
-  } else {
-    await addFavorite(userId, lineupId);
-  }
+	if (isFavorite(lineupId)) {
+		await removeFavorite(userId, lineupId);
+	} else {
+		await addFavorite(userId, lineupId);
+	}
 };
 ```
 
@@ -243,6 +256,7 @@ const handleToggleFavorite = async (lineupId: string) => {
 ## 5️⃣ ENVIRONMENT SETUP
 
 ### `.env` (Frontend)
+
 ```
 VITE_FIREBASE_API_KEY=xxx
 VITE_FIREBASE_AUTH_DOMAIN=xxx
@@ -253,6 +267,7 @@ VITE_FIREBASE_APP_ID=xxx
 ```
 
 ### `.env` (Backend)
+
 ```
 FLASK_ENV=development
 DATABASE_URL=sqlite:///flq.db
@@ -279,11 +294,12 @@ CORS_ORIGINS=http://localhost:3018
 ## 7️⃣ SECURITY NOTES
 
 - Firebase rules by měly omezit přístup:
+
   ```
   match /users/{userId} {
     allow read, write: if request.auth.uid == userId;
   }
-  
+
   match /user_stats/{userId} {
     allow read: if true;
     allow write: if request.auth.uid == userId;
@@ -296,14 +312,15 @@ CORS_ORIGINS=http://localhost:3018
 
 ## Shrnutí
 
-| Komponenta | Technologie | Účel |
-|---|---|---|
-| **Lineups** | Python Backend + SQLite | Ukládání a správa lineupů |
-| **SoccerData** | API backend | Import reálných lineupů |
-| **User data** | Firebase | Uživatelské profily a statistiky |
-| **Frontend** | React + Zustand | UI a state management |
+| Komponenta     | Technologie             | Účel                             |
+| -------------- | ----------------------- | -------------------------------- |
+| **Lineups**    | Python Backend + SQLite | Ukládání a správa lineupů        |
+| **SoccerData** | API backend             | Import reálných lineupů          |
+| **User data**  | Firebase                | Uživatelské profily a statistiky |
+| **Frontend**   | React + Zustand         | UI a state management            |
 
 **Výhody:**
+
 - Lineups offline dostupné (SQLite)
 - User data se synchronizuje (Firebase)
 - Snadná migrace (oddělené store)

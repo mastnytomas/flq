@@ -58,9 +58,9 @@ const TeamListTable: React.FC<Props> = ({ teams }) => {
     <>
       {error && (
         <Alert
-          message="Chyba při načítání dat"
+          message='Chyba při načítání dat'
           description={error}
-          type="error"
+          type='error'
           showIcon
           closable
           style={{ marginBottom: 16 }}

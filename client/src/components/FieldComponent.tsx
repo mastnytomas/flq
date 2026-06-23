@@ -278,20 +278,32 @@ const FieldComponent = () => {
 
   return (
     <>
-      <div className="field-header">
+      <div className='field-header'>
         <a href='/' style={{ marginRight: 'auto', display: 'block', textAlign: 'left' }}>
-          <Button type="text" style={{ color: '#1890ff', fontWeight: 600 }}>← Back</Button>
+          <Button type='text' style={{ color: '#1890ff', fontWeight: 600 }}>
+            ← Back
+          </Button>
         </a>
         <h1 style={{ color: '#1890ff' }}>{lineup?.name}</h1>
         <p>
-          <strong>Coach:</strong> {lineup?.coach} | <strong>Year:</strong> {lineup?.year} | <strong>Opponent:</strong> {lineup?.opponent}
+          <strong>Coach:</strong> {lineup?.coach} | <strong>Year:</strong> {lineup?.year} |{' '}
+          <strong>Opponent:</strong> {lineup?.opponent}
         </p>
         <p>{lineup?.description}</p>
       </div>
       {allPlayersGuessed && (
-        <Card style={{ background: 'linear-gradient(135deg, #52c41a 0%, #73d13d 100%)', color: 'white', textAlign: 'center', marginBottom: 24 }}>
+        <Card
+          style={{
+            background: 'linear-gradient(135deg, #52c41a 0%, #73d13d 100%)',
+            color: 'white',
+            textAlign: 'center',
+            marginBottom: 24,
+          }}
+        >
           <h2 style={{ color: 'white', margin: 0 }}>Excellent! You're a true football expert!</h2>
-          <Button onClick={saveDivAsImage} style={{ marginTop: 16 }}>Save Image</Button>
+          <Button onClick={saveDivAsImage} style={{ marginTop: 16 }}>
+            Save Image
+          </Button>
         </Card>
       )}
       <div id='field' style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>

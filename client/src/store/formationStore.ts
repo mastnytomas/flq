@@ -13,10 +13,10 @@ export const useFormationStore = create<FormationState>((set) => ({
   formations: FORMATIONS,
   loading: false,
   error: null,
-  
+
   fetchFormations: async () => {
     // Formace jsou statické v config.tsx, jen je načteme
-    set({ 
+    set({
       formations: FORMATIONS,
       loading: false,
       error: null,

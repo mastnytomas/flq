@@ -15,12 +15,12 @@ def get_available_leagues():
     """Vrať seznam dostupných lig z FBref"""
     try:
         leagues = soccerdata_service.get_fbref_available_leagues()
-        
+
         return jsonify({
             'success': True,
             'data': leagues
         }), 200
-        
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -29,13 +29,13 @@ def get_team_stats(league, season):
     """Stáhni statistiky týmů ze konkrétní ligy a sezóny"""
     try:
         df = soccerdata_service.get_fbref_teams(league, season)
-        
+
         if df is None:
             return jsonify({'error': 'Nepodařilo se stáhnout data'}), 400
-        
+
         # Konvertuj DataFrame na JSON
         data = df.reset_index().to_dict('records')
-        
+
         return jsonify({
             'success': True,
             'league': league,
@@ -43,7 +43,7 @@ def get_team_stats(league, season):
             'count': len(data),
             'data': data
         }), 200
-        
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -53,17 +53,17 @@ def get_lineups(league, season):
     try:
         # Konvertuj season format: "2024-25" → "2425"
         season_formatted = season.replace('-', '')
-        
+
         logger.info(f"Stahuji lineups: {league} {season} (formatted: {season_formatted})")
-        
+
         # Stáhni data z FBref přes SoccerData
         df = soccerdata_service.get_fbref_lineups(league, season_formatted)
-        
+
         # Pokud nemáme data z FBref (scraping failed), vrať mock data
         # V produkci by se mělo repeatu nebo error handler
         if df is None or df.empty:
             logger.warning(f"SoccerData vrátil prázdná data, používám mock data pro {league}")
-            
+
             # Mock data v produkčním formátu
             mock_lineups = [
                 {
@@ -162,7 +162,7 @@ def get_lineups(league, season):
                     }
                 },
             ]
-            
+
             return jsonify({
                 'success': True,
                 'league': league,
@@ -171,10 +171,10 @@ def get_lineups(league, season):
                 'data': mock_lineups,
                 'note': 'Mock data (SoccerData API trvá dlouho, zkuste později)'
             }), 200
-        
+
         # Transformuj DataFrame na seznam lineupů
         lineups = []
-        
+
         try:
             # FBref vrací DataFrame s indexy (Team, Squad)
             # Columns: Formation, Players, ...
@@ -183,7 +183,7 @@ def get_lineups(league, season):
                     team_name = idx[1] if len(idx) > 1 else idx[0]
                 else:
                     team_name = idx
-                
+
                 lineup_dict = {
                     'team': str(team_name),
                     'formation': str(row.get('Formation', 'N/A')) if 'Formation' in row and pd.notna(row.get('Formation')) else 'N/A',
@@ -191,7 +191,7 @@ def get_lineups(league, season):
                     'date': 'N/A',
                     'players': {}
                 }
-                
+
                 # Pokud máme informace o hráčích, parsujeme je
                 if 'Players' in row and pd.notna(row.get('Players')):
                     try:
@@ -203,20 +203,20 @@ def get_lineups(league, season):
                                 lineup_dict['players'] = {str(k): str(v) for k, v in row['Players'].items()}
                     except Exception as e:
                         logger.warning(f"Chyba při parsování hráčů: {e}")
-                
+
                 # Pokud nemáme hráče, přidej placeholdery
                 if not lineup_dict['players']:
                     for i in range(1, 12):
                         lineup_dict['players'][f'P{i}'] = f'Player {i}'
-                
+
                 lineups.append(lineup_dict)
-        
+
         except Exception as parse_error:
             logger.error(f"Chyba při parsování FBref dat: {parse_error}")
             lineups = df.to_dict('records')
-        
+
         logger.info(f"Vráceno {len(lineups)} lineupů z {league} {season}")
-        
+
         return jsonify({
             'success': True,
             'league': league,
@@ -224,7 +224,7 @@ def get_lineups(league, season):
             'count': len(lineups),
             'data': lineups
         }), 200
-        
+
     except Exception as e:
         logger.error(f"Chyba při stahování lineupů: {e}")
         return jsonify({
@@ -237,13 +237,13 @@ def get_matches(league, season):
     """Stáhni zápasy ze ESPN"""
     try:
         df = soccerdata_service.get_espn_matches(league, season)
-        
+
         if df is None:
             return jsonify({'error': 'Nepodařilo se stáhnout data'}), 400
-        
+
         # Konvertuj DataFrame na JSON
         data = df.reset_index().to_dict('records')
-        
+
         return jsonify({
             'success': True,
             'league': league,
@@ -251,6 +251,6 @@ def get_matches(league, season):
             'count': len(data),
             'data': data
         }), 200
-        
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500

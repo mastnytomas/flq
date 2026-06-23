@@ -7,12 +7,12 @@ import { useEffect } from 'react';
 const Home = () => {
   const navigate = useNavigate();
   const { getRandomLineup, lineups, fetchLineups } = useLineupStore();
-  
+
   useEffect(() => {
     fetchLineups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   const handleRandomTeam = async () => {
     const randomTeamLineup = await getRandomLineup();
     if (randomTeamLineup) {
@@ -23,18 +23,14 @@ const Home = () => {
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px' }}>
       <h1 style={{ textAlign: 'center', marginBottom: 40 }}>Football Lineup Quizzer</h1>
-      
+
       <div style={{ display: 'flex', gap: 16, marginBottom: 32 }}>
-        <Button 
-          type="primary" 
-          size="large"
-          onClick={() => navigate('/import-lineups')}
-        >
+        <Button type='primary' size='large' onClick={() => navigate('/import-lineups')}>
           Import Real Lineups
         </Button>
-        <Button 
-          type="default" 
-          size="large"
+        <Button
+          type='default'
+          size='large'
           onClick={handleRandomTeam}
           disabled={lineups.length === 0}
         >
@@ -42,9 +38,9 @@ const Home = () => {
         </Button>
       </div>
 
-      <Card title="My Lineups" style={{ marginBottom: 24 }}>
+      <Card title='My Lineups' style={{ marginBottom: 24 }}>
         {lineups.length === 0 ? (
-          <Empty description="No lineups yet" style={{ marginTop: 20 }} />
+          <Empty description='No lineups yet' style={{ marginTop: 20 }} />
         ) : (
           <TeamListTable teams={lineups} />
         )}

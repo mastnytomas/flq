@@ -3,9 +3,11 @@
 ## Co bylo změní
 
 ### 1. `client/src/store/lineupStore.ts` ✅
+
 **Změna:** Firebase Firestore → HTTP fetch na Python backend
 
 **Nové funkce:**
+
 - `fetchLineups()` → `GET /api/data/load`
 - `fetchLineupById(id)` → `GET /api/data/{id}`
 - `createLineup(lineup)` → `POST /api/data/save`
@@ -14,23 +16,28 @@
 - `getRandomLineup()` → In-memory select (nevyžaduje fetch)
 
 **Features:**
+
 - ✅ Error handling na všech funkcích
 - ✅ Loading state management
 - ✅ Automatická aktualizace state po operacích
 - ✅ Type-safe s TypeScript
 
 ### 2. `client/src/store/formationStore.ts` ✅
+
 **Změna:** Firebase → Statické formace z config
 
 **Logika:**
+
 - Formace jsou hardcoded v `config/config.tsx`
 - Store je teď lightweight, jen vrací statické data
 - Nemusíme fetchovat z backendu
 
 ### 3. `client/src/utils/TransformData.tsx` ✅
+
 **Změna:** Fixed import z `config` na `types`
 
 **Funkce:** Konvertuje Player names na Squad Player objekty
+
 ```
 { "CB1": "Sergio Ramos", "CB2": "Pepe" }
     ↓
@@ -41,25 +48,28 @@
 ```
 
 ### 4. `client/src/components/TeamListTable.tsx` ✅
+
 **Změna:** Added error message display
 
 **Features:**
+
 - ✅ Alert component pro zobrazení chyb
 - ✅ Automatické načítání lineupů
 - ✅ Loading state
 
 ### 5. `client/src/config/config.tsx` ✅
+
 **Už existuje:** API_ENDPOINTS definované
 
 ```typescript
 API_ENDPOINTS = {
-  SAVE_DATA: '/api/data/save',
-  LOAD_DATA: '/api/data/load',
-  GET_LINEUP: (id) => `/api/data/{id}`,
-  UPDATE_LINEUP: (id) => `/api/data/{id}`,
-  DELETE_LINEUP: (id) => `/api/data/{id}`,
-  // ... a SoccerData endpoints
-}
+	SAVE_DATA: "/api/data/save",
+	LOAD_DATA: "/api/data/load",
+	GET_LINEUP: (id) => `/api/data/{id}`,
+	UPDATE_LINEUP: (id) => `/api/data/{id}`,
+	DELETE_LINEUP: (id) => `/api/data/{id}`,
+	// ... a SoccerData endpoints
+};
 ```
 
 ---
@@ -67,6 +77,7 @@ API_ENDPOINTS = {
 ## 🔌 Data Flow
 
 ### Creating Lineup (POST)
+
 ```
 User fills form in CreateLineup.tsx
     ↓
@@ -82,6 +93,7 @@ Frontend updates state, shows success modal
 ```
 
 ### Loading Lineups (GET)
+
 ```
 Home.tsx mounts
     ↓
@@ -97,6 +109,7 @@ Frontend renders Table
 ```
 
 ### Getting Random Lineup (GET - optional)
+
 ```
 User clicks "Random Team"
     ↓
@@ -167,6 +180,7 @@ Backend (Python Flask)
 Frontend a Backend jsou teď propojené! 🎊
 
 **Příští kroky:**
+
 1. Data transformation (SoccerData lineups → Squad format)
 2. Import Real Lineups UI komponenta
 3. Advanced Statistics View
