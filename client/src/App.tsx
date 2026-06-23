@@ -6,6 +6,7 @@ import { ConfigProvider, theme } from 'antd';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FieldComponent from './components/FieldComponent';
 import CreateFormation from './components/CreateFormation';
+import { ROUTES } from './constants/routes';
 
 function App() {
   const { darkAlgorithm } = theme;

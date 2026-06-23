@@ -16,7 +16,7 @@ const Home = () => {
   const handleRandomTeam = async () => {
     const randomTeamLineup = await getRandomLineup();
     if (randomTeamLineup) {
-      navigate(`/guess/${randomTeamLineup.id}`);
+      navigate(ROUTES.GUESS_ID.path.replace(':id', randomTeamLineup.id));
     }
   };
 
